@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type MyStruct struct {
+type MetricModel struct {
 	ID                int64
 	StartTime         time.Time
 	LastUpdate        time.Time
