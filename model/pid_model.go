@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-type TaskModel struct {
-	ID                int64
+type PidModel struct {
+	ID                int
 	StartTime         time.Time
 	LastUpdate        time.Time
 	CurrentIterations int64
