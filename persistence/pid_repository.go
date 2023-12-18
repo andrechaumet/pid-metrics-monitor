@@ -1,6 +1,6 @@
 package persistence
 
-import "example/user/hello/model"
+import "pid-metrics-monitor/model"
 
 type PidsMemory struct {
 	PidsMap map[int]model.PidModel
