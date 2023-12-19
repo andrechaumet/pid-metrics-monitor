@@ -5,7 +5,7 @@ import (
 )
 
 type MetricModel struct {
-	ID                int64
+	ID                int
 	StartTime         time.Time
 	LastUpdate        time.Time
 	CurrentIterations int64
