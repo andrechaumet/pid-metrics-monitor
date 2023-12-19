@@ -15,3 +15,12 @@ type MetricModel struct {
 	LapsedTime		  int64
 	ExpectedTime	  time.Time	
 }
+
+type PidModel struct {
+	ID                int
+	StartTime         time.Time
+	LastUpdate        time.Time
+	CurrentIterations int64
+	TotalIterations   int64
+	Logs 			  []string
+}
