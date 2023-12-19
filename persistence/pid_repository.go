@@ -14,12 +14,10 @@ func NewPidsMemory() *PidsMemory {
 
 func (p *PidsMemory) FindById(ID int) (model.PidModel, bool) {
     pid, exists := p.PidsMap[ID]
-    if exists {
-        return pid
-    }
-    return exists
+    return pid, exists
 }
 
 func (p *PidsMemory) Save(pid model.PidModel) {
+	pid.Logs = []string{}
 	p.PidsMap[pid.ID] = pid
 }

@@ -16,11 +16,15 @@ func Update(updatedPid model.PidModel) {
 func AddPidLog(ID int, log string) {
     pid, exists := persistence.FindById(ID)
     if exists {
-        if pid.Logs == nil {
-            pid.Logs = []string{}
-        }
+        initLogsIfNil(&pid.Logs)
         pid.Logs = append(pid.Logs, log)
         persistence.Save(&pid)
+    }
+}
+
+func initLogsIfNil(logs *[]string) {
+    if *logs == nil {
+        *logs = []string{}
     }
 }
 
