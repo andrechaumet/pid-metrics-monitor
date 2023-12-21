@@ -9,9 +9,9 @@ func SetupRouter() *gin.Engine {
    r := gin.Default()
    pidRouter := r.Group("/pids")
    {
-      pidRouter.POST("", controller.CreatePID)
-      pidRouter.PUT("/:id", controller.UpdatePID)
-      pidRouter.POST("/:id/logs", controller.CreatePIDLog)
+      pidRouter.POST("", controller.CreatePid)
+      pidRouter.PUT("", controller.UpdatePid)
+      pidRouter.POST("/:id/logs", controller.AddPidLog)
    }
    return r
 }
