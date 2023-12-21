@@ -14,8 +14,8 @@ func Update(updatedPid model.PidModel) {
 	persistence.Save(updatedPid)
 }
 
-func AddPidLog(ID int, log string) {
-	pid, exists := persistence.FindById(ID)
+func AddPidLog(pidID int, log string) {
+	pid, exists := persistence.FindById(pidID)
 	if exists {
 		pid.Logs = initPidLogsIfNil(pid.Logs)
 		pid.Logs = append(pid.Logs, log)
