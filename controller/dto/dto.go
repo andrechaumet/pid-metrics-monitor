@@ -1,5 +1,5 @@
 package dto
 
 type LogRequest struct {
-	LogMessage string `json:"message"`
+	LogMessage []string `json:"message"`
 }

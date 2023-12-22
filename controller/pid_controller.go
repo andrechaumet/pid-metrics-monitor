@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"pid-metrics-monitor/service"
-	"pid-metrics-monitor/dto"
+	"pid-metrics-monitor/controller/dto"
 	"pid-metrics-monitor/model"
 	"strconv"
  )
@@ -30,11 +30,11 @@ import (
  func AddPidLog(c *gin.Context) {
 	pidID := c.Param("id")
 	id, _ := strconv.Atoi(pidID)
-	var log controller.LogRequest
+	var log dto.LogRequest
 	if err := validateLogBody(c, &log); err != nil {
 		return
 	}
-	service.AddPidLog(id, log)
+	service.AddPidLog(id, log.LogMessage)
 	c.JSON(http.StatusCreated, gin.H{"message": "Log added"})
  }
 
@@ -46,7 +46,7 @@ import (
 	return nil
 }
 
-func validateLogBody(c *gin.Context, log *dto.message) error {
+func validateLogBody(c *gin.Context, log *dto.LogRequest) error {
 	if err := c.ShouldBindJSON(log); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return err
