@@ -11,7 +11,7 @@ func SetupRouter() *gin.Engine {
    {
       pidRouter.POST("", controller.CreatePid)
       pidRouter.PUT("", controller.UpdatePid)
-      pidRouter.POST("/:id/logs", controller.AddPidLog)
+      //pidRouter.POST("/:id/logs", controller.AddPidLog)
    }
    return r
 }

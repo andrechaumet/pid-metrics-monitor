@@ -1,6 +1,7 @@
 package service
 
 import (
+	"time"
 	"pid-metrics-monitor/model"
 	"pid-metrics-monitor/persistence"
 )
@@ -9,12 +10,21 @@ func Save(pid model.PidModel) {
 	persistence.Save(pid)
 }
 
-func Update(updatedPid model.PidModel) {
-	persistence.FindById(updatedPid.ID)
-	persistence.Save(updatedPid)
+func Update(sent model.PidModel) {
+	found, exists := persistence.FindById(sent.ID)
+	if exists {
+		updateFound(&found, &sent)	
+	}
+	persistence.Save(found)
 }
 
-func AddPidLog(pidID int, log []string) {
+func updateFound(found *model.PidModel, sent *model.PidModel) {
+	found.LastUpdate = time.Now()
+	found.CurrentIterations = sent.CurrentIterations
+	found.Logs = append(found.Logs, sent.Logs...)
+}
+
+/*func AddPidLog(pidID int, log []string) {
 	pid, exists := persistence.FindById(pidID)
 	if exists {
 		pid.Logs = initPidLogsIfNil(pid.Logs)
@@ -28,4 +38,4 @@ func initPidLogsIfNil(logs []string) []string {
         return []string{}
     }
     return logs
-}
+}*/

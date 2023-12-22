@@ -2,10 +2,10 @@ package controller
 
 import (
 	"net/http"
-	"pid-metrics-monitor/controller/dto"
+	//"pid-metrics-monitor/controller/dto"
+	//"strconv"
 	"pid-metrics-monitor/model"
 	"pid-metrics-monitor/service"
-	"strconv"
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,7 +36,7 @@ func UpdatePid(c *gin.Context) {
 	c.JSON(statusOK, gin.H{messageKey: "PID status updated"})
 }
 
-func AddPidLog(c *gin.Context) {
+/*func AddPidLog(c *gin.Context) {
 	pidID := c.Param("id")
 	id, err := strconv.Atoi(pidID)
 	if err != nil {
@@ -51,7 +51,7 @@ func AddPidLog(c *gin.Context) {
 
 	service.AddPidLog(id, log.LogMessage)
 	c.JSON(statusCreated, gin.H{messageKey: "Log added"})
-}
+}*/
 
 func bindAndValidate(c *gin.Context, obj interface{}) error {
 	if err := c.ShouldBindJSON(obj); err != nil {
