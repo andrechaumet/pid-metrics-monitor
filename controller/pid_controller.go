@@ -18,40 +18,28 @@ const (
 	defaultErrorMessage = "Something went wrong"
 )
 
-func CreatePid(c *gin.Context) {
-	var pidModel model.PidModel
-	if err := bindAndValidate(c, &pidModel); err != nil {
+func Save(c *gin.Context) {
+	var pid model.PidModel
+	if err := bindAndValidate(c, &pid); err != nil {
 		return
 	}
-	service.Save(pidModel)
+	service.Save(pid)
 	c.JSON(statusCreated, gin.H{messageKey: "PID status created"})
 }
 
-func UpdatePid(c *gin.Context) {
-	var pidModel model.PidModel
-	if err := bindAndValidate(c, &pidModel); err != nil {
+func Update(c *gin.Context) {
+	var pid model.PidModel
+	if err := bindAndValidate(c, &pid); err != nil {
 		return
 	}
-	service.Update(pidModel)
+	service.Update(pid)
 	c.JSON(statusOK, gin.H{messageKey: "PID status updated"})
 }
 
-/*func AddPidLog(c *gin.Context) {
-	pidID := c.Param("id")
-	id, err := strconv.Atoi(pidID)
-	if err != nil {
-		c.JSON(badRequest, gin.H{errorKey: "Invalid ID"})
-		return
-	}
-
-	var log dto.LogRequest
-	if err := bindAndValidate(c, &log); err != nil {
-		return
-	}
-
-	service.AddPidLog(id, log.LogMessage)
-	c.JSON(statusCreated, gin.H{messageKey: "Log added"})
-}*/
+func FindAll(c *gin.Context) {
+	pids := service.FindAll()
+	c.JSON(statusOK, pids)
+}
 
 func bindAndValidate(c *gin.Context, obj interface{}) error {
 	if err := c.ShouldBindJSON(obj); err != nil {

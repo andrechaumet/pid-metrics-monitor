@@ -14,6 +14,14 @@ func NewPidsMemory() *PidsMemory {
 	}
 }
 
+func FindAll() []model.PidModel {
+	pids := make([]model.PidModel, 0, len(pidsMemoryInstance.PidsMap))
+	for _, pid := range pidsMemoryInstance.PidsMap {
+		pids = append(pids, pid)
+	}
+	return pids
+}
+
 func Save(pid model.PidModel) {
 	pidsMemoryInstance.save(pid)
 }
