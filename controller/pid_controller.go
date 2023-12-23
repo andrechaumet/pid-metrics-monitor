@@ -18,6 +18,13 @@ const (
 	defaultErrorMessage = "Something went wrong"
 )
 
+type PidDto struct {
+	ID                int
+	CurrentIterations int
+	TotalIterations   int
+	Logs 			  []string
+}
+
 func Save(c *gin.Context) {
 	var pid model.PidModel
 	if err := bindAndValidate(c, &pid); err != nil {
@@ -47,4 +54,12 @@ func bindAndValidate(c *gin.Context, obj interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func toModel(dto PidDto) model.PidModel {
+	var model model.PidModel
+	model.CurrentIterations = dto.CurrentIterations
+	model.TotalIterations = dto.TotalIterations
+	model.Logs = dto.Logs
+	return model
 }
