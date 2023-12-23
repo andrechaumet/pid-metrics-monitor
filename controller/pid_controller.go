@@ -26,21 +26,21 @@ type PidDto struct {
 }
 
 func Save(c *gin.Context) {
-	var pid model.PidModel
+	var pid PidDto
 	if err := bindAndValidate(c, &pid); err != nil {
 		return
 	}
-	service.Save(pid)
-	c.JSON(statusCreated, gin.H{messageKey: "PID status created"})
+	service.Save(toModel(pid))
+	c.JSON(statusCreated, gin.H{messageKey: "PID created"})
 }
 
 func Update(c *gin.Context) {
-	var pid model.PidModel
+	var pid PidDto
 	if err := bindAndValidate(c, &pid); err != nil {
 		return
 	}
-	service.Update(pid)
-	c.JSON(statusOK, gin.H{messageKey: "PID status updated"})
+	service.Update(toModel(pid))
+	c.JSON(statusOK, gin.H{messageKey: "PID updated"})
 }
 
 func FindAll(c *gin.Context) {
