@@ -2,8 +2,6 @@ package controller
 
 import (
 	"net/http"
-	//"pid-metrics-monitor/controller/dto"
-	//"strconv"
 	"pid-metrics-monitor/model"
 	"pid-metrics-monitor/service"
 	"github.com/gin-gonic/gin"

@@ -6,9 +6,9 @@ type PidsMemory struct {
 	PidsMap map[int]model.PidModel
 }
 
-var pidsMemoryInstance = NewPidsMemory()
+var pidsMemoryInstance = newPidsMemory()
 
-func NewPidsMemory() *PidsMemory {
+func newPidsMemory() *PidsMemory {
 	return &PidsMemory{
 		PidsMap: make(map[int]model.PidModel),
 	}
