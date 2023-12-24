@@ -18,26 +18,25 @@ func Save(pid model.PidModel) {
 func Update(sent model.PidModel) {
 	found, exists := persistence.FindById(sent.ID)
 	if exists {
-		metrify(found, sent)	
+		metrify(&sent, &found)	
+		Save(found)
 	}
-	persistence.Save(found)
 }
 
-func setLastUpdate(pid *model.PidModel) {
-	pid.LastUpdate = time.Now()
-}
-
-func calculateCurrentSpeed(sent model.PidModel, found model.PidModel) float64 {
-	//timeElapsed := time.Since(found.StartTime).Seconds()
+func calculateCurrentSpeed(sent, found *model.PidModel) float64 {
 	iterationsIncrease := float64(sent.CurrentIterations - found.CurrentIterations)
 	timeElapsedSinceLastUpdate := time.Since(found.LastUpdate).Seconds()
 	currentSpeed := iterationsIncrease / timeElapsedSinceLastUpdate
 	return currentSpeed
 }
 
-func metrify(found model.PidModel, sent model.PidModel) {
+func metrify(sent, found *model.PidModel) {
 	found.CurrentSpeed = calculateCurrentSpeed(sent, found)
 	found.CurrentIterations = sent.CurrentIterations
 	found.Logs = append(found.Logs, sent.Logs...)
+}
+
+func setLastUpdate(pid *model.PidModel) {
+	pid.LastUpdate = time.Now()
 }
 
