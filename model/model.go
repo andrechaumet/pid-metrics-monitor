@@ -9,7 +9,7 @@ type PidModel struct {
 	StartTime         time.Time
 	LastUpdate        time.Time
 	CurrentIterations int
-	CurrentSpeed 	  string
+	CurrentSpeed 	  float64
 	TotalIterations   int
 	Percentage        float64
 	LapsedTime		  int
