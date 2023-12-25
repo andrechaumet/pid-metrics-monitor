@@ -3,11 +3,15 @@ package service
 import (
 	"time"
 	"pid-metrics-monitor/model"
-	"pid-metrics-monitor/persistence"
+	"pid-metrics-monitor/repository"
 )
 
 func FindAll() []model.PidModel {
-	return persistence.FindAll()
+	foundPids := persistence.FindAll()
+	for i := range foundPids {
+		calculateCurrentSpeed(&foundElements[i])
+	}
+	return foundPids
 }
 
 func Save(pid model.PidModel) {
@@ -23,9 +27,9 @@ func Update(sent model.PidModel) {
 	}
 }
 
-/*func calculateCurrentSpeed(found model.PidModel) {
-
-}*/
+func calculateCurrentSpeed(found *model.PidModel) {
+	found.CurrentSpeed = updateCurrentSpeed(0, found)
+}
 
 //I wrote the algorithm to work with seconds, but maybe it should spit millis instead
 func updateCurrentSpeed(newIterations int, found *model.PidModel) float64 {

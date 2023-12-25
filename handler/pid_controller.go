@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"net/http"
@@ -41,17 +41,17 @@ func Update(c *gin.Context) {
 	c.JSON(statusOK, gin.H{messageKey: "PID updated"})
 }
 
-func FindAll(c *gin.Context) {
-	pids := service.FindAll()
-	c.JSON(statusOK, pids)
-}
-
 func bindAndValidate(c *gin.Context, obj interface{}) error {
 	if err := c.ShouldBindJSON(obj); err != nil {
 		c.JSON(badRequest, gin.H{errorKey: err.Error()})
 		return err
 	}
 	return nil
+}
+
+func FindAll(c *gin.Context) {
+	pids := service.FindAll()
+	c.JSON(statusOK, pids)
 }
 
 func toModel(dto PidDto) model.PidModel {
