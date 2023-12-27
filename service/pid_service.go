@@ -7,11 +7,11 @@ import (
 )
 
 func FindAll() []model.PidModel {
-	foundPids := persistence.FindAll()
-	for i := range foundPids {
-		calculateCurrentSpeed(&foundElements[i])
+	found := persistence.FindAll()
+	for i := range found {
+		calculateCurrentSpeed(&found[i])
 	}
-	return foundPids
+	return found
 }
 
 func Save(pid model.PidModel) {
@@ -42,6 +42,9 @@ func updateCurrentSpeed(newIterations int, found *model.PidModel) float64 {
 func metrify(sent, found *model.PidModel) {
 	found.CurrentSpeed = updateCurrentSpeed(sent.CurrentIterations, found)
 	found.CurrentIterations = sent.CurrentIterations
+	found.Percentage = 
+	found.LapsedTime = 
+	found.ExpectedTime =
 	found.Logs = append(found.Logs, sent.Logs...)
 }
 

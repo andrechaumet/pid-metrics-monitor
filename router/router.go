@@ -3,6 +3,7 @@ package router
 import (
    "github.com/gin-gonic/gin"
    "pid-metrics-monitor/handler"
+   "pid-metrics-monitor/batch"
 )
 
 const (
@@ -17,5 +18,6 @@ func SetupRouter() *gin.Engine {
       pidRouter.PUT(BasePath, handler.Update)
       pidRouter.GET(BasePath, handler.FindAll)
    }
+   go batch.LoadAndDisplay()
    return r
 }
