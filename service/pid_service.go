@@ -14,6 +14,11 @@ func FindAll() []model.PidModel {
 	return found
 }
 
+func Create(pid model.PidModel) {
+
+}
+
+//Rename to store
 func Save(pid model.PidModel) {
 	setLastUpdate(&pid)
 	persistence.Save(pid)

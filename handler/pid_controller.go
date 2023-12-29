@@ -5,6 +5,7 @@ import (
 	"pid-metrics-monitor/model"
 	"pid-metrics-monitor/service"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 const (
@@ -18,6 +19,7 @@ const (
 
 type PidDto struct {
 	ID                int
+	StartTime         time.Time
 	CurrentIterations int
 	TotalIterations   int
 	Logs 			  []string
