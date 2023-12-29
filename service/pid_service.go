@@ -13,8 +13,6 @@ func FindAll() []model.PidModel {
 	}
 	return found
 }
-//TODO:
-//func Create
 
 func Save(pid model.PidModel) {
 	setLastUpdate(&pid)
@@ -45,9 +43,9 @@ func updateCurrentSpeed(newIterations int, found *model.PidModel) float64 {
 func metrify(sent, found *model.PidModel) {
 	found.CurrentSpeed = updateCurrentSpeed(sent.CurrentIterations, found)
 	found.CurrentIterations = sent.CurrentIterations
-	found.Percentage = 
-	found.LapsedTime = 
-	found.ExpectedTime =
+	found.Percentage = (sent.CurrentIterations * 100) / found.TotalIterations
+	found.LapsedTime = time.Now().Sub(found.StartTime)
+	//found.ExpectedTime = 
 	found.Logs = append(found.Logs, sent.Logs...)
 }
 
