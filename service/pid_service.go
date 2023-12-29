@@ -29,6 +29,7 @@ func Update(sent model.PidModel) {
 
 func calculateCurrentSpeed(found *model.PidModel) {
 	found.CurrentSpeed = updateCurrentSpeed(0, found)
+	found.LapsedTime = int(time.Now().Sub(found.StartTime).Seconds())
 }
 
 func calculateExpectedTime(sent, found model.PidModel) time.Time {
@@ -46,12 +47,11 @@ func updateCurrentSpeed(newIterations int, found *model.PidModel) float64 {
 	return currentSpeed
 }
 
-//TODO:
+//TODO: Lapsed time should be updated in Calculate curent speed
 func metrify(sent, found *model.PidModel) {
 	found.CurrentSpeed 		= updateCurrentSpeed(sent.CurrentIterations, found)
 	found.CurrentIterations = sent.CurrentIterations
 	found.Percentage 		= float64((sent.CurrentIterations * 100) / found.TotalIterations)
-	found.LapsedTime 		= int(time.Now().Sub(found.StartTime).Seconds())
 	found.ExpectedTime 		= calculateExpectedTime(*sent, *found)
 	found.Logs 				= append(found.Logs, sent.Logs...)
 }
