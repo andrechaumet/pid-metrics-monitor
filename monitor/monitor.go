@@ -4,6 +4,9 @@ import (
 	"pid-metrics-monitor/service"
 	"fmt"
 	"time"
+	"os"
+	"os/exec"
+	"runtime"
 )
 
 const timeFormat = "2006-01-02 15:04:05"
@@ -11,15 +14,12 @@ const timeFormat = "2006-01-02 15:04:05"
 func Display() {
 	for {
 		display()
-		time.Sleep(time.Second)
-		time.Sleep(time.Second)
-		time.Sleep(time.Second)
 	}
 }
 
 func display() {
 	for {
-		//clearLastLines(3)
+		clear()
 		time.Sleep(time.Second)
 		for _, pid := range service.FindAll() {
 			fmt.Printf("ID: %d, StartTime: %s, LastUpdate: %s\n", pid.ID, pid.StartTime.Format(timeFormat), pid.LastUpdate.Format(timeFormat))
@@ -30,8 +30,17 @@ func display() {
 	}
 }
 
-func clearLastLines(numLines int) {
-	for i := 0; i < numLines; i++ {
-		fmt.Print("\033[A\033[K")
+func clear() {
+	switch runtime.GOOS {
+	case "windows":
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	case "linux", "darwin":
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	default:
+		fmt.Println("No se puede limpiar la consola en este sistema operativo.")
 	}
 }
