@@ -20,6 +20,7 @@ func Create(pid model.PidModel) {
 
 //Rename to store
 func Save(pid model.PidModel) {
+	setStartTime(&pid)
 	setLastUpdate(&pid)
 	persistence.Save(pid)
 }
@@ -44,12 +45,15 @@ func calculateExpectedTime(sent, found model.PidModel) time.Time {
 	return expectedTime
 }
 
-//I wrote the algorithm to work with seconds, but maybe it should spit millis instead
+//TODO: cs/s =  (current amount of iterations - previous amount of iterations) / current time - last update in seconds
 func updateCurrentSpeed(newIterations int, found *model.PidModel) float64 {
-	iterationsIncrease := float64(newIterations - found.CurrentIterations)
-	timeElapsedSinceLastUpdate := time.Since(found.LastUpdate).Seconds()
-	currentSpeed := iterationsIncrease / timeElapsedSinceLastUpdate
-	return currentSpeed
+    iterationsIncrease := float64(newIterations - found.CurrentIterations)
+    timeElapsedSinceLastUpdate := time.Since(found.LastUpdate).Seconds()
+    if timeElapsedSinceLastUpdate == 0 {
+        return 0.0
+    }
+    currentSpeed := iterationsIncrease / timeElapsedSinceLastUpdate
+    return currentSpeed
 }
 
 //TODO: Lapsed time should be updated in Calculate curent speed
@@ -63,5 +67,9 @@ func metrify(sent, found *model.PidModel) {
 
 func setLastUpdate(pid *model.PidModel) {
 	pid.LastUpdate = time.Now()
+}
+
+func setStartTime(pid *model.PidModel) {
+	pid.StartTime = time.Now()
 }
 

@@ -31,7 +31,7 @@ func Save(c *gin.Context) {
 		return
 	}
 	service.Save(toModel(pid))
-	c.JSON(statusCreated, gin.H{messageKey: "PID created"})
+	c.JSON(statusCreated)
 }
 
 func Update(c *gin.Context) {
@@ -40,7 +40,7 @@ func Update(c *gin.Context) {
 		return
 	}
 	service.Update(toModel(pid))
-	c.JSON(statusOK, gin.H{messageKey: "PID updated"})
+	c.JSON(statusOK)
 }
 
 func bindAndValidate(c *gin.Context, obj interface{}) error {
