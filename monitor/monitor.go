@@ -19,7 +19,7 @@ func Display() {
 
 func display() {
 	for {
-		//clear()
+		clear()
 		time.Sleep(time.Second)
 		time.Sleep(time.Second)
 		for _, pid := range service.FindAll() {

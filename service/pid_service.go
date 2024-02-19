@@ -1,9 +1,9 @@
 package service
 
 import (
-	"time"
 	"pid-metrics-monitor/model"
-	"pid-metrics-monitor/repository"
+	persistence "pid-metrics-monitor/repository"
+	"time"
 )
 
 func FindAll() []model.PidModel {
@@ -15,10 +15,9 @@ func FindAll() []model.PidModel {
 }
 
 func Create(pid model.PidModel) {
-
+	persistence.Save(pid)
 }
 
-//Rename to store
 func Save(pid model.PidModel) {
 	setStartTime(&pid)
 	setLastUpdate(&pid)
@@ -28,14 +27,14 @@ func Save(pid model.PidModel) {
 func Update(sent model.PidModel) {
 	found, exists := persistence.FindById(sent.ID)
 	if exists {
-		metrify(&sent, &found)	
+		metrify(&sent, &found)
 		Save(found)
 	}
 }
 
 func calculateCurrentSpeed(found *model.PidModel) {
 	found.CurrentSpeed = updateCurrentSpeed(0, found)
-	found.LapsedTime = int(time.Now().Sub(found.StartTime).Seconds())
+	found.LapsedTime = int(time.Since(found.StartTime).Seconds())
 }
 
 func calculateExpectedTime(sent, found model.PidModel) time.Time {
@@ -45,24 +44,24 @@ func calculateExpectedTime(sent, found model.PidModel) time.Time {
 	return expectedTime
 }
 
-//TODO: cs/s =  (current amount of iterations - previous amount of iterations) / current time - last update in seconds
+// TODO: cs/s =  (current amount of iterations - previous amount of iterations) / current time - last update in seconds
 func updateCurrentSpeed(newIterations int, found *model.PidModel) float64 {
-    iterationsIncrease := float64(newIterations - found.CurrentIterations)
-    timeElapsedSinceLastUpdate := time.Since(found.LastUpdate).Seconds()
-    if timeElapsedSinceLastUpdate == 0 {
-        return 0.0
-    }
-    currentSpeed := iterationsIncrease / timeElapsedSinceLastUpdate
-    return currentSpeed
+	iterationsIncrease := float64(newIterations - found.CurrentIterations)
+	timeElapsedSinceLastUpdate := time.Since(found.LastUpdate).Seconds()
+	if timeElapsedSinceLastUpdate == 0 {
+		return 0.0
+	}
+	currentSpeed := iterationsIncrease / timeElapsedSinceLastUpdate
+	return currentSpeed
 }
 
-//TODO: Lapsed time should be updated in Calculate curent speed
+// TODO: Lapsed time should be updated in Calculate curent speed
 func metrify(sent, found *model.PidModel) {
-	found.CurrentSpeed 		= updateCurrentSpeed(sent.CurrentIterations, found)
+	found.CurrentSpeed = updateCurrentSpeed(sent.CurrentIterations, found)
 	found.CurrentIterations = sent.CurrentIterations
-	found.Percentage 		= float64((sent.CurrentIterations * 100) / found.TotalIterations)
-	found.ExpectedTime 		= calculateExpectedTime(*sent, *found)
-	found.Logs 				= append(found.Logs, sent.Logs...)
+	found.Percentage = float64((sent.CurrentIterations * 100) / found.TotalIterations)
+	found.ExpectedTime = calculateExpectedTime(*sent, *found)
+	found.Logs = append(found.Logs, sent.Logs...)
 }
 
 func setLastUpdate(pid *model.PidModel) {
@@ -72,4 +71,3 @@ func setLastUpdate(pid *model.PidModel) {
 func setStartTime(pid *model.PidModel) {
 	pid.StartTime = time.Now()
 }
-

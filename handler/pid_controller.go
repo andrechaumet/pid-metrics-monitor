@@ -26,6 +26,15 @@ type PidDto struct {
 	Logs              []string
 }
 
+func Create(c *gin.Context) {
+	var pid PidDto
+	if err := bindAndValidate(c, &pid); err != nil {
+		return
+	}
+	service.Create(toModel(pid))
+	c.Status(http.StatusCreated)
+}
+
 func Save(c *gin.Context) {
 	var pid PidDto
 	if err := bindAndValidate(c, &pid); err != nil {
