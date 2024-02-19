@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"pid-metrics-monitor/model"
 	"pid-metrics-monitor/service"
-	"github.com/gin-gonic/gin"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -22,7 +23,7 @@ type PidDto struct {
 	StartTime         time.Time
 	CurrentIterations int
 	TotalIterations   int
-	Logs 			  []string
+	Logs              []string
 }
 
 func Save(c *gin.Context) {
@@ -31,7 +32,7 @@ func Save(c *gin.Context) {
 		return
 	}
 	service.Save(toModel(pid))
-	c.JSON(statusCreated)
+	c.Status(http.StatusCreated)
 }
 
 func Update(c *gin.Context) {
@@ -40,7 +41,7 @@ func Update(c *gin.Context) {
 		return
 	}
 	service.Update(toModel(pid))
-	c.JSON(statusOK)
+	c.Status(http.StatusAccepted)
 }
 
 func bindAndValidate(c *gin.Context, obj interface{}) error {
