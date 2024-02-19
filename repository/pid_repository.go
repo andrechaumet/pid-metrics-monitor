@@ -1,17 +1,31 @@
 package persistence
 
-import "pid-metrics-monitor/model"
+import (
+	"pid-metrics-monitor/model"
+)
 
 type PidsMemory struct {
-	PidsMap map[int]model.PidModel
+	PidsMap   map[int]model.PidModel
+	currentID int
 }
 
 var pidsMemoryInstance = newPidsMemory()
 
 func newPidsMemory() *PidsMemory {
 	return &PidsMemory{
-		PidsMap: make(map[int]model.PidModel),
+		PidsMap:   make(map[int]model.PidModel),
+		currentID: 0,
 	}
+}
+
+func Create(pid model.PidModel) {
+	pidsMemoryInstance.create(pid)
+}
+
+func (pm *PidsMemory) create(pid model.PidModel) {
+	pid.ID = pm.currentID
+	pm.PidsMap[pm.currentID] = pid
+	pm.currentID++
 }
 
 func FindAll() []model.PidModel {
