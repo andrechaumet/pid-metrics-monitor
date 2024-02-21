@@ -56,9 +56,9 @@ func FindAll(c *gin.Context) {
 }
 
 func toModel(dto PidDto) model.PidModel {
-	var model model.PidModel
-	model.CurrentIterations = dto.CurrentIterations
-	model.TotalIterations = dto.TotalIterations
-	model.Logs = dto.Logs
-	return model
+	var domain model.PidModel
+	domain.CurrentIterations = dto.CurrentIterations
+	domain.TotalIterations = dto.TotalIterations
+	domain.Logs = dto.Logs
+	return domain
 }
