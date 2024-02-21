@@ -1,26 +1,14 @@
 package handler
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"pid-metrics-monitor/model"
 	"pid-metrics-monitor/service"
-	"time"
-
-	"github.com/gin-gonic/gin"
-)
-
-const (
-	statusCreated       = http.StatusCreated
-	statusOK            = http.StatusOK
-	badRequest          = http.StatusBadRequest
-	messageKey          = "message"
-	errorKey            = "error"
-	defaultErrorMessage = "Something went wrong"
 )
 
 type PidDto struct {
 	ID                int
-	StartTime         time.Time
 	CurrentIterations int
 	TotalIterations   int
 	Logs              []string
@@ -35,7 +23,7 @@ func Create(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
-func Save(c *gin.Context) {
+/*func Save(c *gin.Context) {
 	var pid PidDto
 	if err := bindAndValidate(c, &pid); err != nil {
 		return
@@ -43,6 +31,7 @@ func Save(c *gin.Context) {
 	service.Save(toModel(pid))
 	c.Status(http.StatusCreated)
 }
+*/
 
 func Update(c *gin.Context) {
 	var pid PidDto
@@ -55,7 +44,7 @@ func Update(c *gin.Context) {
 
 func bindAndValidate(c *gin.Context, obj interface{}) error {
 	if err := c.ShouldBindJSON(obj); err != nil {
-		c.JSON(badRequest, gin.H{errorKey: err.Error()})
+		c.JSON(http.StatusBadRequest, err)
 		return err
 	}
 	return nil
@@ -63,7 +52,7 @@ func bindAndValidate(c *gin.Context, obj interface{}) error {
 
 func FindAll(c *gin.Context) {
 	pids := service.FindAll()
-	c.JSON(statusOK, pids)
+	c.JSON(http.StatusOK, pids)
 }
 
 func toModel(dto PidDto) model.PidModel {
