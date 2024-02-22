@@ -9,6 +9,7 @@ import (
 
 type PidDto struct {
 	ID                int
+	Name              string
 	CurrentIterations int
 	TotalIterations   int
 	Logs              []string
@@ -23,12 +24,12 @@ func Create(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
-/*func Save(c *gin.Context) {
+/*func save(c *gin.Context) {
 	var pid PidDto
 	if err := bindAndValidate(c, &pid); err != nil {
 		return
 	}
-	service.Save(toModel(pid))
+	service.save(toModel(pid))
 	c.Status(http.StatusCreated)
 }
 */
@@ -59,6 +60,7 @@ func toModel(dto PidDto) model.PidModel {
 	var domain model.PidModel
 	domain.CurrentIterations = dto.CurrentIterations
 	domain.TotalIterations = dto.TotalIterations
+	domain.Name = dto.Name
 	domain.Logs = dto.Logs
 	return domain
 }

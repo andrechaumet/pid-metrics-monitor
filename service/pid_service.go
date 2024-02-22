@@ -17,25 +17,30 @@ func Create(pid model.PidModel) {
 	persistence.Save(pid)
 }
 
-func Save(pid model.PidModel) {
-	setLastUpdate(&pid)
-	persistence.Save(pid)
-}
-
 func Update(sentPid model.PidModel) {
 	foundPid, exists := persistence.FindById(sentPid.ID)
 	if exists {
 		//metrify(&sentPid, &foundPid)
-		setLastUpdate(&foundPid)
-		Save(foundPid)
+		save(foundPid)
 	}
 }
 
+func save(pid model.PidModel) {
+	setLastUpdate(&pid)
+	persistence.Save(pid)
+}
+
 func setStartTime(pid *model.PidModel) {
+	if pid.StartTime == nil {
+		pid.StartTime = new(time.Time)
+	}
 	*pid.StartTime = time.Now()
 }
 
 func setLastUpdate(pid *model.PidModel) {
+	if pid.LastUpdate == nil {
+		pid.LastUpdate = new(time.Time)
+	}
 	*pid.LastUpdate = time.Now()
 }
 

@@ -14,7 +14,7 @@ func SetupRouter() *gin.Engine {
 	r := gin.Default()
 	pidRouter := r.Group("/pids")
 	{
-		pidRouter.POST(BasePath, handler.Save)
+		pidRouter.POST(BasePath, handler.Create)
 		pidRouter.PUT(BasePath, handler.Update)
 		pidRouter.GET(BasePath, handler.FindAll)
 	}
