@@ -11,16 +11,17 @@ func FindAll() []model.PidModel {
 	return found
 }
 
-func Create(pid model.PidModel) {
+func Create(pid model.PidModel) int {
 	setStartTime(&pid)
 	setLastUpdate(&pid)
-	persistence.Save(pid)
+	return persistence.Create(pid)
 }
 
 func Update(sentPid model.PidModel) {
-	foundPid, exists := persistence.FindById(sentPid.ID)
-	if exists {
-		//metrify(&sentPid, &foundPid)
+	foundPid := persistence.FindById(sentPid.ID)
+	if &foundPid != nil {
+		//TODO: complete later
+		foundPid.CurrentIterations = sentPid.CurrentIterations
 		save(foundPid)
 	}
 }

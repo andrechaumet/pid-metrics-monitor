@@ -18,14 +18,15 @@ func newPidsMemory() *PidsMemory {
 	}
 }
 
-func Create(pid model.PidModel) {
-	pidsMemoryInstance.create(pid)
+func Create(pid model.PidModel) int {
+	return pidsMemoryInstance.create(pid)
 }
 
-func (pm *PidsMemory) create(pid model.PidModel) {
+func (pm *PidsMemory) create(pid model.PidModel) int {
 	pid.ID = pm.currentID
 	pm.PidsMap[pm.currentID] = pid
 	pm.currentID++
+	return pid.ID
 }
 
 func FindAll() []model.PidModel {
@@ -44,9 +45,9 @@ func (pm *PidsMemory) save(pid model.PidModel) {
 	pm.PidsMap[pid.ID] = pid
 }
 
-func FindById(ID int) (model.PidModel, bool) {
-	pid, exists := pidsMemoryInstance.PidsMap[ID]
-	return pid, exists
+func FindById(ID int) model.PidModel {
+	pid := pidsMemoryInstance.PidsMap[ID]
+	return pid
 }
 
 func (pm *PidsMemory) findById(ID int) model.PidModel {

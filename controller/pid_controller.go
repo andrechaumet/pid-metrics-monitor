@@ -20,19 +20,8 @@ func Create(c *gin.Context) {
 	if err := bindAndValidate(c, &pid); err != nil {
 		return
 	}
-	service.Create(toModel(pid))
-	c.Status(http.StatusCreated)
+	c.JSON(http.StatusCreated, service.Create(toModel(pid)))
 }
-
-/*func save(c *gin.Context) {
-	var pid PidDto
-	if err := bindAndValidate(c, &pid); err != nil {
-		return
-	}
-	service.save(toModel(pid))
-	c.Status(http.StatusCreated)
-}
-*/
 
 func Update(c *gin.Context) {
 	var pid PidDto
