@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"pid-metrics-monitor/handler"
-	"pid-metrics-monitor/monitor"
+	"pid-metrics-monitor/controller"
+	"pid-metrics-monitor/display"
 )
 
 const (
@@ -14,10 +14,10 @@ func SetupRouter() *gin.Engine {
 	r := gin.Default()
 	pidRouter := r.Group("/pids")
 	{
-		pidRouter.POST(BasePath, handler.Create)
-		pidRouter.PUT(BasePath, handler.Update)
-		pidRouter.GET(BasePath, handler.FindAll)
+		pidRouter.POST(BasePath, controller.Create)
+		pidRouter.PUT(BasePath, controller.Update)
+		pidRouter.GET(BasePath, controller.FindAll)
 	}
-	go monitor.Display()
+	go display.Display()
 	return r
 }
