@@ -1,8 +1,6 @@
 package model
 
-import (
-	"time"
-)
+import "time"
 
 type Status int
 
@@ -12,7 +10,7 @@ const (
 	Failed
 )
 
-type PidModel struct {
+type Pid struct {
 	ID                int
 	Name              string
 	StartTime         *time.Time
@@ -23,7 +21,7 @@ type PidModel struct {
 	Logs              []string
 }
 
-func (p *PidModel) CurrentSpeed() float64 {
+func (p *Pid) CurrentSpeed() float64 {
 	if p.StartTime == nil || p.LastUpdate == nil {
 		return 0
 	}
@@ -34,7 +32,7 @@ func (p *PidModel) CurrentSpeed() float64 {
 	return float64(p.CurrentIterations) / timeDifference
 }
 
-func (p *PidModel) ExpectedTime() float64 {
+func (p *Pid) ExpectedTime() float64 {
 	currentSpeed := p.CurrentSpeed()
 	if currentSpeed == 0 {
 		return 0
@@ -42,14 +40,14 @@ func (p *PidModel) ExpectedTime() float64 {
 	return float64(p.TotalIterations-p.CurrentIterations) / currentSpeed
 }
 
-func (p *PidModel) Percentage() float64 {
+func (p *Pid) Percentage() float64 {
 	if p.TotalIterations == 0 {
 		return 0.0
 	}
 	return float64(p.CurrentIterations) / float64(p.TotalIterations) * 100.0
 }
 
-func (p *PidModel) LapsedTime() int {
+func (p *Pid) LapsedTime() int {
 	if p.StartTime == nil {
 		return 0
 	}
