@@ -2,75 +2,39 @@ package display
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
+	"pid-metrics-monitor/model"
 	"pid-metrics-monitor/service"
-	"runtime"
+	"strconv"
 	"strings"
-	"time"
 )
 
-const timeFormat = "2006-11-02 15:04:05"
-const idDisplaySize = 10
-const nameDisplaySize = 10
-const timeDisplaySize = 10
-const percentageDisplaySize = 10
+const (
+	timeFormat   = "2006-01-02 15:04:05"
+	headerFormat = "PID\tNAME\t\tLAPSED-TIME\tCURRENT / TOTAL\tPERCENTAGE %\tLAST UPDATE"
+	valueFormat  = "%s\t%s\t%.2f%%\t%s\t%.2f%%\t%s\t%s\t%d\n"
+)
 
 func Display() {
-	for {
-		time.Sleep(3 * time.Second)
-		for _, pid := range service.FindAll() {
-			fmt.Printf("ID      NAME      LAPSED TIME      CURRENT / TOTAL      PERCENTAGE      LAST UPDATE")
-			fmt.Printf("%s %s %d %d/%d %.2f%% %s",
-				formatValue(pid.ID, idDisplaySize),
-				formatValue(pid.Name, nameDisplaySize),
-				formatValue(pid.LapsedTime(), timeDisplaySize),
-				formatValue(pid.Percentage(), percentageDisplaySize),
-				formatValue(pid.LastUpdate, timeDisplaySize),
-			)
-			fmt.Println("--")
-		}
+	fmt.Println(headerFormat)
+	processes := service.FindAll()
+	for _, p := range processes {
+		displayPid(p)
 	}
 }
 
-//ID, NAME, LAPSED-TIME, CURRENT/TOTAL, PERCENTAGE, LAST UPDATE
+func displayPid(p model.Pid) {
+	id := truncateValue(strconv.Itoa(p.ID), 10)
+	name := truncateValue(p.Name, 10)
+	lapsedTime := p.LapsedTime()
+	currentTotal := fmt.Sprintf("%d / %d", p.CurrentIterations, p.TotalIterations)
+	percentage := p.Percentage()
+	lastUpdate := p.LastUpdate.Format(timeFormat)
+	fmt.Printf(valueFormat, id, name, lapsedTime, currentTotal, percentage, lastUpdate)
+}
 
-func formatValue(value interface{}, length int) string {
-	str := fmt.Sprintf("%v", value)
+func truncateValue(str string, length int) string {
 	if len(str) > length {
 		return str[:length]
-	} else if len(str) < length {
-		spaces := length - len(str)
-		return str + strings.Repeat(" ", spaces)
 	}
-	return str
-}
-
-func formatLapsedTime() {
-
-}
-
-func formatCurrentTotal() {
-
-}
-
-func formatPercentage() {
-
-}
-
-func formatLastUpdate() {
-
-}
-
-func clear() {
-	switch runtime.GOOS {
-	case "windows":
-		cmd := exec.Command("cmd", "/c", "cls")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-	default:
-		cmd := exec.Command("clear")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-	}
+	return str + strings.Repeat(" ", length-len(str))
 }
