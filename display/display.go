@@ -11,7 +11,7 @@ import (
 const (
 	timeFormat   = "2006-01-02 15:04:05"
 	headerFormat = "PID\tNAME\t\tLAPSED-TIME\tCURRENT / TOTAL\tPERCENTAGE %\tLAST UPDATE"
-	valueFormat  = "%s\t%s\t%.2f%%\t%s\t%.2f%%\t%s\t%s\t%d\n"
+	valueFormat  = "%s\t%s\t%s\t%s\t%.2f%%\t%s\n"
 )
 
 func Display() {
