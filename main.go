@@ -1,11 +1,11 @@
-package main
+package pid_metrics_monitor
 
 import (
 	"net/http"
-	"pid-metrics-monitor/router"
- )
- 
- func main() {
-	r := router.SetupRouter()
+	"pid-metrics-monitor/base"
+)
+
+func main() {
+	r := base.SetupRouter()
 	http.ListenAndServe(":8081", r)
- }
+}

@@ -1,11 +1,9 @@
-package router
+package base
 
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"pid-metrics-monitor/display"
-	"pid-metrics-monitor/model"
-	"pid-metrics-monitor/service"
+	"pid-metrics-monitor/domain"
 )
 
 type PidDto struct {
@@ -24,7 +22,7 @@ func SetupRouter() *gin.Engine {
 		pidRouter.PUT("/", Update)
 		pidRouter.GET("/", FindAll)
 	}
-	go display.Display()
+	go Display()
 	return r
 }
 
@@ -33,7 +31,7 @@ func Create(c *gin.Context) {
 	if err := bindAndValidate(c, &pid); err != nil {
 		return
 	}
-	c.JSON(http.StatusCreated, service.Create(toModel(pid)))
+	c.JSON(http.StatusCreated, domain.Create(toModel(pid)))
 }
 
 func Update(c *gin.Context) {
@@ -41,12 +39,12 @@ func Update(c *gin.Context) {
 	if err := bindAndValidate(c, &pid); err != nil {
 		return
 	}
-	service.Update(toModel(pid))
+	domain.Update(toModel(pid))
 	c.Status(http.StatusAccepted)
 }
 
 func FindAll(c *gin.Context) {
-	pids := service.FindAll()
+	pids := domain.FindAll()
 	c.JSON(http.StatusOK, pids)
 }
 
@@ -58,8 +56,8 @@ func bindAndValidate(c *gin.Context, obj interface{}) error {
 	return nil
 }
 
-func toModel(dto PidDto) model.Pid {
-	var model model.Pid
+func toModel(dto PidDto) domain.Pid {
+	var model domain.Pid
 	model.ID = dto.ID
 	model.CurrentIterations = dto.CurrentIterations
 	model.TotalIterations = dto.TotalIterations

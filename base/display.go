@@ -1,9 +1,8 @@
-package display
+package base
 
 import (
 	"fmt"
-	"pid-metrics-monitor/model"
-	"pid-metrics-monitor/service"
+	"pid-metrics-monitor/domain"
 	"strconv"
 	"strings"
 )
@@ -16,16 +15,16 @@ const (
 
 func Display() {
 	fmt.Println(headerFormat)
-	processes := service.FindAll()
+	processes := domain.FindAll()
 	for _, p := range processes {
 		displayPid(p)
 	}
 }
 
-func displayPid(p model.Pid) {
+func displayPid(p domain.Pid) {
 	id := truncateValue(strconv.Itoa(p.ID), 10)
 	name := truncateValue(p.Name, 10)
-	lapsedTime := p.LapsedTime()
+	lapsedTime := strconv.Itoa(p.LapsedTime())
 	currentTotal := fmt.Sprintf("%d / %d", p.CurrentIterations, p.TotalIterations)
 	percentage := p.Percentage()
 	lastUpdate := p.LastUpdate.Format(timeFormat)
